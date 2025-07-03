@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Frontend</title>
+</head>
+<body>
+    <h1>Bienvenue sur le Frontend</h1>
+    <p id="backend-data">Chargement des données du backend...</p>
+
+    <script>
+        fetch("http://{{ backend_ip }}:5000/info")
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("backend-data").innerText = data.message;
+            })
+            .catch(error => {
+                document.getElementById("backend-data").innerText = "Erreur de connexion au backend.";
+                console.error(error);
+            });
+    </script>
+</body>
+</html>

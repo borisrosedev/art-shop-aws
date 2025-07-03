@@ -1,0 +1,10 @@
+aws_region              = "eu-west-3"
+vpc_id                  = "vpc-04859a84539547d8e"
+azs                     = ["eu-west-3a", "eu-west-3b"]
+frontend_subnet_cidrs   = ["172.31.100.0/24"]
+backend_subnet_cidrs    = ["172.31.200.0/24"]
+vm_ami                  = "ami-0f8d3c5dcfaceaa4f"
+public_key_path         = "~/.ssh/my-ansible-key.pub"
+key_name                = "ansible-key"
+frontend_instance_type  = "t2.micro"
+backend_instance_type   = "t2.micro"

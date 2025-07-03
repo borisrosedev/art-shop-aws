@@ -1,0 +1,46 @@
+---
+- name: Installer Python3
+  ansible.builtin.yum:
+    name:
+      - python3
+      - python3-pip
+    state: present
+
+- name: Installer Flask
+  ansible.builtin.pip:
+    name: flask
+
+- name: Copier app.py
+  ansible.builtin.copy:
+    src: app.py
+    dest: /home/ec2-user/app.py
+    mode: '0755'
+
+- name: Démarrer le backend Flask avec systemd
+  ansible.builtin.copy:
+    dest: /etc/systemd/system/flask-backend.service
+    content: |
+      [Unit]
+      Description=Flask Backend
+      After=network.target
+
+      [Service]
+      ExecStart=/usr/bin/python3 /home/ec2-user/app.py
+      Restart=always
+      User=ec2-user
+
+      [Install]
+      WantedBy=multi-user.target
+  notify: Restart flask
+
+- name: Enable service
+  ansible.builtin.systemd:
+    name: flask-backend
+    enabled: yes
+    state: started
+
+handlers:
+  - name: Restart flask
+    ansible.builtin.systemd:
+      name: flask-backend
+      state: restarted

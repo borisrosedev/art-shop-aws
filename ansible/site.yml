@@ -1,0 +1,14 @@
+---
+- name: Déploiement du backend Flask
+  hosts: backend
+  become: true
+  roles:
+    - backend
+
+- name: Déploiement du frontend NGINX avec appel au backend
+  hosts: frontend
+  become: true
+  vars:
+    backend_ip: "{{ hostvars[groups['backend'][0]].ansible_host }}"
+  roles:
+    - frontend

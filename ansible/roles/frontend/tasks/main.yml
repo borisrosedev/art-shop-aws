@@ -1,0 +1,27 @@
+---
+- name: Install NGINX
+  ansible.builtin.yum:
+    name: nginx
+    state: present
+
+- name: Start NGINX
+  ansible.builtin.systemd:
+    name: nginx
+    enabled: true
+    state: started
+
+- name: Deploy index.html
+  ansible.builtin.copy:
+    src: index.html
+    dest: /usr/share/nginx/html/index.html
+    mode: '0644'
+    
+- name: Récupérer l'IP publique du backend
+  ansible.builtin.set_fact:
+    backend_ip: "{{ hostvars['backend'].ansible_host }}"
+
+- name: Template index.html
+  ansible.builtin.template:
+    src: index.html.j2
+    dest: /usr/share/nginx/html/index.html
+    mode: '0644'

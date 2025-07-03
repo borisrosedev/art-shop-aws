@@ -1,0 +1,16 @@
+# ansible/install-nginx.yml
+- name: Installation de Nginx
+  hosts: frontend
+  become: yes
+
+  tasks:
+    - name: Installer Nginx
+      yum:
+        name: nginx
+        state: present
+
+    - name: Démarrer Nginx
+      systemd:
+        name: nginx
+        state: started
+        enabled: yes
